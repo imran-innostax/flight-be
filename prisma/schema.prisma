@@ -1,0 +1,187 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model specialServiceRuleTable {
+  id                            String   @id @default(uuid()) @db.Text
+  enable                        Boolean? @default(false)
+  currency                      String?  @db.VarChar(255)
+  origin                        String?  @db.VarChar(255)
+  destination                   String?  @db.VarChar(255)
+  carriercode                   String?  @db.VarChar(255)
+  offermeals                    Boolean? @default(false)
+  offerseats                    Boolean? @default(false)
+  Offerfrequentflyermiles       Boolean? @default(false)
+  offerpricewithincludedbaggage Boolean? @default(false)
+}
+
+model locations {
+  id          String  @id @default(uuid()) @db.Text
+  iata        String? @db.VarChar(255)
+  cityName    String? @db.VarChar(255)
+  airportName String? @db.VarChar(255)
+  country     String? @db.VarChar(255)
+  countryCode String? @db.VarChar(255)
+  icon        String? @db.VarChar(255)
+}
+
+model Booking {
+  id                   String      @id @default(uuid()) @db.Text
+  orderId              String?     @db.VarChar(255)
+  orderRef             String?     @db.VarChar(255)
+  orderType            String?     @default("INSTANT") @db.VarChar(255)
+  status               String?     @default("PENDING") @db.VarChar(255)
+  reference            String?     @db.VarChar(255)
+  paymentIntentId      String?     @db.VarChar(255)
+  paymentStatus        String?     @default("PENDING") @db.VarChar(255)
+  supplier             String?     @default("AM") @db.VarChar(255)
+  createdAt            DateTime?   @default("2023-08-25T10:26:25.000Z") @db.Timestamptz(3)
+  updatedAt            DateTime?   @default("2023-08-24T10:26:57.309Z") @db.Timestamptz(3)
+  stripeSessionId      String?     @db.VarChar(255)
+  razorpayOrderId      String?     @db.VarChar(255)
+  flightOfferId        String?     @db.VarChar(255)
+  flightInternalSource String?     @db.VarChar(255)
+  userEmail            String?     @db.VarChar(255)
+  Passenger            Passenger[]
+  Itinerary            Itinerary[]
+  Price                Price[]
+}
+
+model Passenger {
+  id                 String               @id @default(uuid()) @db.Text
+  passengerId        String?              @db.VarChar(255)
+  countryCode        String?              @db.VarChar(255)
+  email              String?              @db.VarChar(255)
+  dateOfBirth        String?              @db.VarChar(255)
+  passengerType      String?              @db.VarChar(255)
+  title              String?              @default("Mr") @db.VarChar(255)
+  gender             String?              @default("MALE") @db.VarChar(255)
+  firstName          String?              @db.VarChar(255)
+  lastName           String?              @db.VarChar(255)
+  seatNumber         String?              @db.VarChar(255)
+  fareOption         String?              @db.VarChar(255)
+  bookingId          String?              @db.VarChar(255)
+  Booking            Booking?             @relation(fields: [bookingId], references: [id])
+  phone              String?              @db.VarChar(255)
+  Document           Document[]
+  Baggage            Baggage[]
+  fareDetailsByRoute fareDetailsByRoute[]
+}
+
+model Itinerary {
+  id        String   @id @default(uuid()) @db.Text
+  duration  String?  @db.VarChar(255)
+  bookingId String?  @db.VarChar(255)
+  Booking   Booking? @relation(fields: [bookingId], references: [id])
+  Route     Route[]
+}
+
+model Document {
+  id                  String     @id @default(uuid()) @db.Text
+  number              String?    @db.VarChar(255)
+  issuanceDate        String?    @db.VarChar(255)
+  expiryDate          String?    @db.VarChar(255)
+  issuanceCountryCode String?    @db.VarChar(255)
+  issuanceLocation    String?    @db.VarChar(255)
+  nationality         String?    @db.VarChar(255)
+  documentType        String?    @default("PASSPORT") @db.VarChar(255)
+  passengerId         String?    @db.VarChar(255)
+  Passenger           Passenger? @relation(fields: [passengerId], references: [id])
+  holder              Boolean?   @default(false)
+  birthPlace          String?    @db.VarChar(255)
+}
+
+model Price {
+  id            String   @id @default(uuid()) @db.Text
+  basePrice     String?  @db.VarChar(255)
+  grandTotal    String?  @db.VarChar(255)
+  discountAmt   String?  @db.VarChar(255)
+  commissionAmt String?  @db.VarChar(255)
+  currency      String?  @db.VarChar(255)
+  bookingId     String?  @db.VarChar(255)
+  Booking       Booking? @relation(fields: [bookingId], references: [id])
+  Fee           Fee[]
+}
+
+model Fee {
+  id         String  @id @default(uuid()) @db.Text
+  type       String? @db.VarChar(255)
+  amount     String? @db.VarChar(255)
+  refundable String? @db.VarChar(255)
+  currency   String? @db.VarChar(255)
+  priceId    String? @db.VarChar(255)
+  Price      Price?  @relation(fields: [priceId], references: [id])
+}
+
+model Baggage {
+  id          String     @id @default(uuid()) @db.Text
+  quantity    Int?
+  weight      String?    @db.VarChar(255)
+  type        String?    @default("CHECKED") @db.VarChar(255)
+  passengerId String?    @db.VarChar(255)
+  Passenger   Passenger? @relation(fields: [passengerId], references: [id])
+}
+
+model Route {
+  id              String     @id @default(uuid()) @db.Text
+  departIataCode  String?    @db.VarChar(255)
+  departTerminal  String?    @db.VarChar(255)
+  departAt        String?    @db.VarChar(255)
+  arrivalIataCode String?    @db.VarChar(255)
+  arrivalTerminal String?    @db.VarChar(255)
+  arrivalAt       String?    @db.VarChar(255)
+  flightNumber    String?    @db.VarChar(255)
+  aircraftCode    String?    @db.VarChar(255)
+  duration        String?    @db.VarChar(255)
+  numberOfStops   Int?
+  carrierCode     String?    @db.VarChar(255)
+  routeId         String?    @db.VarChar(255)
+  itineraryId     String?    @db.VarChar(255)
+  Itinerary       Itinerary? @relation(fields: [itineraryId], references: [id])
+}
+
+model fareDetailsByRoute {
+  id                            String     @id @default(uuid()) @db.Text
+  routeId                       String?    @db.VarChar(255)
+  fareBasis                     String?    @db.VarChar(255)
+  class                         String?    @db.VarChar(255)
+  brandedFare                   String?    @db.VarChar(255)
+  includedCheckedBagsUnit       Int?
+  includedCheckedBagsWeight     Int?
+  includedCheckedBagsWeightUnit String?    @db.VarChar(255)
+  cabin                         String?    @db.VarChar(255)
+  passengerId                   String?    @db.VarChar(255)
+  Passenger                     Passenger? @relation(fields: [passengerId], references: [id])
+}
+
+model Users {
+  id           String  @id @default(uuid()) @db.Text
+  name         String? @db.VarChar(255)
+  email        String? @db.VarChar(255)
+  password     String? @db.VarChar(255)
+  accesstoken  String? @db.VarChar(255)
+  refreshtoken String? @db.VarChar(255)
+}
+
+model payment {
+  id          String    @id @default(uuid()) @db.Text
+  enable      Boolean?  @default(false)
+  regionality String?   @default("DOMESTIC") @db.VarChar(255)
+  provider    String?   @db.VarChar(255)
+  validTill   DateTime? @default("2023-09-10T18:32:05.470Z") @db.Timestamptz(3)
+}
+
+model logging {
+  id           String  @id @default(uuid()) @db.Text
+  corelationId String? @db.VarChar(255)
+  date         String? @db.VarChar(255)
+  serviceType  String? @db.VarChar(255)
+  logType      String? @db.VarChar(255)
+  log          Json?
+  bookingId    String? @db.VarChar(255)
+}
