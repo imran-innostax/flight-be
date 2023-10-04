@@ -35,7 +35,7 @@ jobs:
           # NOTE: If required, update to the appropriate source folder
           source: ./
           env_vars: |
-            PORT=${{ secrets.PORT }}
+            PORT=${{ secrets.BE_PORT }}
             DATABASE_URL=${{ secrets.DATABASE_URL }}
             EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
             EMAIL_USERNAME=${{ secrets.EMAIL_USERNAME }}
