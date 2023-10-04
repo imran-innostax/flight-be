@@ -25,6 +25,9 @@ jobs:
         uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: ${{ secrets.GCR_AUTH }}
+          
+      - name: Connect to cloud SQL
+        run: gcloud run services update deploy-flight-be --add-cloudsql-instances=corded-skill-400111:us-central1:test-db-instance --region=${{ env.REGION }}
 
       - name: Deploy to Cloud Run
         id: deploy
@@ -51,9 +54,6 @@ jobs:
             RAZORPAY_KEY_SECRET=${{ secrets.RAZORPAY_KEY_SECRET }}
             RAZORPAY_KEY_ID=${{ secrets.RAZORPAY_KEY_ID }}
             BACKEND_DEPLOYED_INSTANCE_URL=${{ secrets.BACKEND_DEPLOYED_INSTANCE_URL }}
-
-      - name: Connect to cloud SQL
-        run: gcloud run services update deploy-flight-be --add-cloudsql-instances=corded-skill-400111:us-central1:test-db-instance --region=${{ env.REGION }}
 
       - name: Apply Policy
         run:  gcloud run services add-iam-policy-binding ${{ env.SERVICE }} --member="allUsers" --role="roles/run.invoker" --region=${{ env.REGION }}
