@@ -34,6 +34,24 @@ jobs:
           region: ${{ env.REGION }}
           # NOTE: If required, update to the appropriate source folder
           source: ./
+          env_vars: |
+            PORT=${{ secrets.PORT }}
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
+            EMAIL_USERNAME=${{ secrets.EMAIL_USERNAME }}
+            EMAIL_HOST=${{ secrets.EMAIL_HOST }}
+            EMAIL_PORT=${{ secrets.EMAIL_PORT }}
+            AMADEUS_API_BASE_URL=${{ secrets.AMADEUS_API_BASE_URL }}
+            AMADEUS_CLIENT_ID=${{ secrets.AMADEUS_CLIENT_ID }}
+            AMADEUS_GRANT_TYPE=${{ secrets.AMADEUS_GRANT_TYPE }}
+            AMADEUS_CLIENT_SECRET=${{ secrets.AMADEUS_CLIENT_SECRET }}
+            STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}
+            RABBITMQ_SERVER=${{ secrets.RABBITMQ_SERVER }}
+            RABBITMQ_IDP_QUEUE=${{ secrets.RABBITMQ_IDP_QUEUE }}
+            RABBITMQ_EMAIL_QUEUE=${{ secrets.RABBITMQ_EMAIL_QUEUE }}
+            RAZORPAY_KEY_SECRET=${{ secrets.RAZORPAY_KEY_SECRET }}
+            RAZORPAY_KEY_ID=${{ secrets.RAZORPAY_KEY_ID }}
+            BACKEND_DEPLOYED_INSTANCE_URL=${{ secrets.BACKEND_DEPLOYED_INSTANCE_URL }}
 
       - name: Apply Policy
         run:  gcloud run services add-iam-policy-binding ${{ env.SERVICE }} --member="allUsers" --role="roles/run.invoker" --region=${{ env.REGION }}
