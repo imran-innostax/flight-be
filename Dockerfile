@@ -14,6 +14,3 @@ COPY . .
 
 # Expose port 8080
 EXPOSE 8080
-
-# Prisma Migrate & Start application
-CMD ["npm", "run", "docker"] 
