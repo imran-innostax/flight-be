@@ -14,7 +14,7 @@
 		"eslint-watch": "onchange \"**/*.js\" -- npx eslint",
 		"build": "echo \"There is no build command for backend\"",
 		"ci": "yarn install --frozen-lockfile",
-		"docker": "npx prisma format && npx prisma generate && npx prisma migrate dev && npm start"
+		"docker": "npx prisma format && npx prisma generate && npx prisma migrate dev && npm run start"
 	},
 	"author": "",
 	"license": "ISC",
