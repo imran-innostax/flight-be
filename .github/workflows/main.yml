@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 env:
   PROJECT_ID: corded-skill-400111  # TODO: update Google Cloud project id
-  SERVICE: deploy-flight-be2 # TODO: update Cloud Run service name
+  SERVICE: deploy-flight-be3 # TODO: update Cloud Run service name
   REGION: asia-south2  # TODO: update Cloud Run service region
 
 jobs:
