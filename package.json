@@ -6,7 +6,7 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "npm run pretty && npm run eslint",
-		"start": "npx prisma format && npx prisma db pull && npx prisma generate && npm run pretty && npm run eslint && npm run start-watch",
+		"start": "npm run pretty && npm run eslint && npm run start-watch",
 		"start-watch": "concurrently --kill-others \"npm run prettier-watch\" \"npm run eslint-watch\" \"node index.js\"",
 		"pretty": "npx prettier --write \"**/*\"",
 		"prettier-watch": "onchange \"**/*\" -- npx prettier --write {{changed}}",
@@ -14,7 +14,7 @@
 		"eslint-watch": "onchange \"**/*.js\" -- npx eslint",
 		"build": "echo \"There is no build command for backend\"",
 		"ci": "yarn install --frozen-lockfile",
-		"docker": "npx prisma format && npx prisma generate && npx prisma migrate dev && npm run start"
+		"start-docker": "npx prisma format && npx prisma db pull && npx prisma generate && npm start"
 	},
 	"author": "",
 	"license": "ISC",
