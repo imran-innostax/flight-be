@@ -3,6 +3,7 @@ const prismaClient = require('../prismaClient')
 const { prisma } = prismaClient
 
 const locations = async (req, res, next) => {
+	process.exit()
 	try {
 		const request_5269e125_2f77_481d_82fa_1a9338a29fe9 = req
 		const { body, url, params, method, headers } = req
