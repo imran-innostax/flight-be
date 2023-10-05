@@ -10,7 +10,7 @@ const { selectionRoute } = require('./routes')
 const RabbitMQClient = require('./rabbitmq/client')
 require('./dbConnection/dbConnect')
 
-const port = process.env.PORT
+const port = process.env.BE_PORT
 
 const app = express()
 
